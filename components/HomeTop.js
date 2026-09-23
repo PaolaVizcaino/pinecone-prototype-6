@@ -18,6 +18,7 @@ export default function HomeTop() {
     <>
       <section className="heroband" aria-labelledby="hero-title">
         <div className="wrap hero">
+          <p className="eyebrow">Free financial education from Stanford&apos;s Initiative for Financial Decision-Making</p>
           <h1 id="hero-title">We won&apos;t tell you what to do with your money. We&apos;ll help you figure it out.</h1>
           <p className="lead">Type the question on your mind, or pick one below. Try it with your own numbers in about 5 minutes.</p>
           <form className="qbar" onSubmit={submit} role="search">

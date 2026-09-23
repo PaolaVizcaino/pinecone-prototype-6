@@ -19,8 +19,8 @@ export default function RootLayout({ children }) {
           <div className="nav-in">
             <Link href="/" className="brand" aria-label="Pinecone by Stanford, home"><img src="/logo.png" alt="Pinecone by Stanford" width={150} height={46} /></Link>
             <nav aria-label="Site">
-              <a href="#">Video Portal</a>
-              <a href="#">Podcast</a>
+              <Link href="/videos">Videos</Link>
+              <Link href="/calculators">Calculators</Link>
               <a href="https://ifdm.stanford.edu" target="_blank" rel="noreferrer">Stanford IFDM</a>
             </nav>
           </div>

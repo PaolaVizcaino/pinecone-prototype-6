@@ -8,8 +8,11 @@ export default function GameFrame({ game }) {
   useEffect(() => {
     if (game.kind !== 'local') return;
     const on = (e) => {
-      if (ref.current && e.source === ref.current.contentWindow && e.data && e.data.pineconeHeight) {
-        setH(Math.max(360, Math.ceil(e.data.pineconeHeight) + 8));
+      if (!ref.current || e.source !== ref.current.contentWindow || !e.data) return;
+      if (e.data.pineconeHeight) setH(Math.max(360, Math.ceil(e.data.pineconeHeight) + 8));
+      if (e.data.pineconeScrollTop) {
+        const top = ref.current.getBoundingClientRect().top + window.scrollY - 16;
+        window.scrollTo({ top, behavior: 'smooth' });
       }
     };
     window.addEventListener('message', on);
