@@ -213,3 +213,10 @@ a.linkbtn{text-decoration:none}
 .story__lines p{font-size:16px;color:var(--ink);padding-left:12px;border-left:3px solid var(--teal)}
 .video__box{aspect-ratio:16/9;max-height:420px;width:100%;background:var(--navy);color:#fff;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:24px}
 .video__box span{font-size:44px;opacity:.9}.video__box b{font-size:20px}.video__box small{color:#bfd0da;font-size:14px}
+
+.ftabs{display:flex;gap:8px;flex-wrap:wrap}
+.ftab{font:inherit;font-size:14px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 14px;display:inline-flex;align-items:center;gap:8px;transition:border-color .15s,background .15s}
+.ftab i{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.ftab:hover{border-color:var(--c);color:var(--ink)}
+.ftab[aria-selected=true]{background:var(--c);border-color:var(--c);color:#fff}
+.ftab[aria-selected=true] i{background:#fff}

@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import HomeTop from '@/components/HomeTop';
-import { situations, topicOrder } from '@/lib/content';
+import SituationsFilter from '@/components/SituationsFilter';
 
 export default function Home() {
   return (
@@ -12,26 +11,10 @@ export default function Home() {
           <div className="sechead">
             <div>
               <h2>Or find your situation</h2>
-              <p className="muted">Grouped by topic. Pick the one that sounds like you.</p>
+              <p className="muted">Pick a topic to narrow it down, or browse them all.</p>
             </div>
           </div>
-          {topicOrder.map((topic) => {
-            const group = situations.filter((s) => s.topic === topic);
-            if (!group.length) return null;
-            return (
-              <div className="topicgroup" key={topic} style={{ '--c': group[0].hex }}>
-                <h3 className="topicgroup__h"><i /> {topic}</h3>
-                <div className="sitgrid">
-                  {group.map((s) => (
-                    <Link key={s.slug} href={`/situations/${s.slug}`} className="sitcard" style={{ '--c': s.hex }}>
-                      <h3>{s.name}</h3>
-                      <p>{s.blurb}</p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+          <SituationsFilter />
         </section>
       </div>
 
