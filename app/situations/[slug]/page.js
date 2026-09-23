@@ -29,33 +29,23 @@ export default function SituationPage({ params }) {
         <p className="muted" style={{ fontSize: 20 }}>{s.blurb}</p>
       </div>
 
-      {live.length > 0 && (
-        <section className="block">
-          <div className="sechead"><h2>Try it with your own numbers</h2></div>
-          <div className="modules">
-            {live.map(([, slug]) => <QuestionCard key={slug} slug={slug} q={questions[slug]} />)}
-          </div>
-        </section>
-      )}
-
-      {soon.length > 0 && (
-        <section className="block">
-          <div className="sechead"><h2>{live.length ? 'More questions, coming soon' : 'Questions coming soon'}</h2></div>
-          <div className="modules">
-            {soon.map(([text]) => (
-              <div key={text} className="module module--soon" style={{ '--c': s.hex }} aria-disabled="true">
-                <div className="module__body">
-                  <div className="module__tags">
-                    <span className="tag tag--topic">{s.topic}</span>
-                    <span className="popular">Coming soon</span>
-                  </div>
-                  <h3>{text}</h3>
+      <section className="block">
+        <div className="sechead"><h2>Try it with your own numbers</h2></div>
+        <div className="modules">
+          {live.map(([, slug]) => <QuestionCard key={slug} slug={slug} q={questions[slug]} />)}
+          {soon.map(([text]) => (
+            <a key={text} href="#" className="module" style={{ '--c': s.hex }}>
+              <div className="module__body">
+                <div className="module__tags">
+                  <span className="tag tag--topic">{s.topic}</span>
+                  <span className="popular">Try it</span>
                 </div>
+                <h3>{text}</h3>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            </a>
+          ))}
+        </div>
+      </section>
 
       {calcs.length > 0 && (
         <section className="block">

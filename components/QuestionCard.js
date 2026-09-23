@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { liveQuestions } from '@/lib/content';
 
@@ -8,14 +9,15 @@ const Clock = () => (
 // Same card anatomy as prototype 3: topic tag, question, one line, time.
 export default function QuestionCard({ slug, q }) {
   const live = liveQuestions.includes(slug);
-  const Tag = live ? Link : 'div';
-  const props = live ? { href: `/q/${slug}` } : { 'aria-disabled': 'true' };
+  // Research prototype: cards that are not built look and hover like the live one, but go nowhere.
+  const Tag = live ? Link : 'a';
+  const props = live ? { href: `/q/${slug}` } : { href: '#', onClick: (e) => e.preventDefault() };
   return (
-    <Tag {...props} className={live ? 'module' : 'module module--off'} style={{ '--c': q.hex }}>
+    <Tag {...props} className="module" style={{ '--c': q.hex }}>
       <div className="module__body">
         <div className="module__tags">
           <span className="tag tag--topic">{q.topic}</span>
-          <span className="popular">{live ? 'Try it' : 'Coming soon'}</span>
+          <span className="popular">Try it</span>
         </div>
         <h3>{q.title}</h3>
         <p>{q.blurb}</p>

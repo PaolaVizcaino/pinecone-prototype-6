@@ -40,8 +40,8 @@ export default function HomeTop() {
           <section className="block" aria-live="polite">
             <div className="sechead">
               <div>
-                <h2>{result.live.length ? 'Pages that fit your question' : 'We don\u2019t have that one yet'}</h2>
-                <p className="muted">{result.live.length ? `For \u201c${asked}\u201d` : `Nothing ready to try for \u201c${asked}\u201d. Here is where to start instead.`}</p>
+                <h2>Pages that fit your question</h2>
+                <p className="muted">{`For \u201c${asked}\u201d`}</p>
               </div>
               <button type="button" className="linkbtn" onClick={clear}>Back to all questions</button>
             </div>
@@ -50,7 +50,7 @@ export default function HomeTop() {
             </div>
             {result.soon.length > 0 && (
               <div className="narrow" style={{ marginTop: 12 }}>
-                <h3 style={{ fontSize: 17 }}>Related questions, coming soon</h3>
+                <h3 style={{ fontSize: 17 }}>Related questions</h3>
                 <ul className="list">
                   {result.soon.map((r) => (
                     <li key={r.title}><Link href={`/situations/${r.situation.slug}`} style={{ fontSize: 17 }}>{r.title}<span className="tag soon">{r.situation.name}</span></Link></li>
