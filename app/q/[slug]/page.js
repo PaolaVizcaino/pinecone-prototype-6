@@ -26,9 +26,17 @@ export default function QuestionPage({ params }) {
       </div>
 
       {q.story && (
-        <section className="story">
-          <span className="tag tag--topic" style={{ '--c': q.hex }}>Meet {q.story.who}</span>
-          <div className="story__lines">{q.story.lines.map((l) => <p key={l}>{l}</p>)}</div>
+        <section className="story" aria-label={`Meet ${q.story.who}`}>
+          <div className="story__who">
+            <div className="story__avatar" aria-hidden="true">{q.story.who[0]}</div>
+            <div>
+              <p className="eyebrow">Meet {q.story.who}</p>
+              <h2>{q.story.who}</h2>
+              <p className="muted">{q.story.role}</p>
+            </div>
+          </div>
+          <ul className="story__facts">{q.story.facts.map((f) => <li key={f}>{f}</li>)}</ul>
+          <div className="story__goal"><span className="eyebrow">Her goal</span><p>{q.story.goal}</p></div>
         </section>
       )}
       <a className="learnjump" href="#learn">New to this? Read the idea behind it</a>

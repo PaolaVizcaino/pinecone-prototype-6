@@ -21,7 +21,7 @@ p{margin:0}.muted{color:var(--muted)}.small{font-size:14px}
 .bar b{font-size:18px}.bar span{font-size:13px;opacity:.85}
 .wrap{max-width:720px;margin:0 auto;padding:28px 20px 64px}
 .step{display:flex;flex-direction:column;gap:20px}
-.prog{display:flex;gap:6px}.prog i{height:4px;flex:1;border-radius:2px;background:var(--line)}.prog i.on{background:var(--teal)}
+.prog{display:flex;gap:6px;margin-bottom:18px}.prog i{height:4px;flex:1;border-radius:2px;background:var(--line)}.prog i.on{background:var(--teal)}
 button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offset:2px}
 
 /* ask yourself */
@@ -97,7 +97,7 @@ footer{font-size:13px;color:var(--muted);margin-top:40px;padding-top:16px;border
 body.grace .addrow{display:none}
 body.grace .r__amt input:not([readonly]){border:2px solid var(--teal);background:var(--teal-soft)}
 body.grace .r__amt input:not([readonly]):focus{background:#fff}
-.editkey{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--teal-text)}.editkey i{width:26px;height:16px;border:2px solid var(--teal);background:var(--teal-soft);border-radius:5px}
+.editkey{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin-top:-8px}.editkey i{font-style:normal;font-weight:700;font-size:13px;color:var(--ink);padding:3px 8px;border:2px solid var(--teal);background:var(--teal-soft);border-radius:6px;font-variant-numeric:tabular-nums}
 </style>
 
 <div class="bar"><b>Pinecone</b><span>Research prototype</span></div>
@@ -127,7 +127,7 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
     </div>
   </div>
   <div class="alert" id="alert" hidden></div>
-  <p class="editkey" id="editkey" hidden><i></i> Outlined boxes are the ones you can change.</p>
+  <p class="editkey" id="editkey" hidden><i>$ 600</i> Boxes like this one are the ones you can change.</p>
 
   <div class="tbl tbl--in" id="tIn"><div class="tbl__head"><h3>Money in<small>What lands in your account after taxes.</small></h3><b id="tIn_t">$0</b></div><div class="rows"></div></div>
   <div class="tbl tbl--save" id="tSave"><div class="tbl__head"><h3>Planned savings<small>Saving you set aside on purpose, before you spend.</small></h3><b id="tSave_t">$0</b></div><div class="rows"></div></div>
