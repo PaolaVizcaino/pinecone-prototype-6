@@ -227,3 +227,5 @@ a.linkbtn{text-decoration:none}
 .ftab[aria-selected=true]{background:var(--c);border-color:var(--c);color:#fff}
 .ftab[aria-selected=true] i{background:#fff}
 .qhead__lead{font-size:17px;max-width:none}.qhead__lead b{color:var(--navy-deep)}
+
+.learn__steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}.learn__steps b{color:var(--ink);font-weight:700}

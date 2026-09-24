@@ -72,6 +72,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 .nav{display:flex;flex-direction:column;gap:6px}
 .backlink{font:inherit;font-size:15px;font-weight:600;color:var(--teal-text);background:none;border:0;padding:0;cursor:pointer;align-self:flex-start;margin-bottom:-8px}.backlink:hover{text-decoration:underline}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dllink{font:inherit;font-size:15px;font-weight:600;color:var(--teal-text);background:none;border:0;padding:8px 0;cursor:pointer;display:inline-flex;align-items:center;gap:8px;align-self:center}.dllink:hover{text-decoration:underline}
 
 /* picture */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
@@ -161,7 +162,7 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
     </div>
   </div>
   <div class="verdict" id="verdict"></div>
-  <div class="btns"><button class="cta second" id="back1">Adjust the budget</button><button class="cta" id="dl">Download this budget</button></div>
+  <div class="nav"><button class="cta second" id="back1">Adjust the budget</button><button type="button" class="dllink" id="dl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 10l6 6 6-6M4 20h16"/></svg>Download this budget</button></div>
 </section>
 
 <footer>Pinecone is financial education from Stanford. It helps you think through money decisions. It doesn't give financial advice.</footer>
@@ -177,7 +178,7 @@ const LINES=[
  {id:'pay',n:'Paycheck (after taxes)',side:'in',g:'',v:GRACE?4300:0,lock:1},
  {id:'side',n:'Side income, tips or gigs',side:'in',g:'',v:0,lock:1,hideG:1},
  {id:'ef',n:'Emergency fund',side:'save',g:'',v:0,lock:1,hideG:1},
- {id:'ret',n:'Retirement (401k, IRA)',side:'save',g:'',v:GRACE?300:0,lock:1},
+ {id:'ret',n:GRACE?'Retirement (401k)':'Retirement (IRA)',side:'save',g:'',v:GRACE?300:0,lock:1},
  {id:'goal',n:'A goal (trip, car, home)',side:'save',g:'',v:0,lock:1,hideG:1},
  {id:'rent',n:'Rent or mortgage',side:'out',g:'Bills',fixed:1,v:GRACE?1500:0,lock:1},
  {id:'util',n:'Utilities',side:'out',g:'Bills',fixed:1,v:GRACE?250:0,lock:1},

@@ -20,6 +20,21 @@ export default function LearnPanel({ learn }) {
         <div className="learn__body">{learn.idea.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}</div>
       </details>
 
+      {(learn.more || []).map((m) => (
+        <details key={m.title}>
+          <summary>{m.title}</summary>
+          <div className="learn__body">
+            {m.intro && <p>{m.intro}</p>}
+            {m.ordered ? (
+              <ol className="learn__steps">{m.items.map(([t, d]) => <li key={t}><b>{t}:</b> {d}</li>)}</ol>
+            ) : (
+              <ul className="learn__steps">{m.items.map(([t, d]) => <li key={t}><b>{t}:</b> {d}</li>)}</ul>
+            )}
+            {m.outro && <p>{m.outro}</p>}
+          </div>
+        </details>
+      ))}
+
       <details>
         <summary>Words to know</summary>
         <dl className="learn__body learn__terms">
