@@ -26,6 +26,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 
 /* ask yourself */
 .ask{padding:10px 8px 14px}
+.monthly{font-size:15px;color:var(--muted);padding:0 8px 2px}.monthly b{color:var(--ink)}
 .ask b{display:block;color:var(--navy);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
 .ask ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:16px;font-weight:500;counter-reset:q}
 .ask li{counter-increment:q;display:flex;gap:10px;align-items:baseline}
@@ -130,6 +131,7 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
     </ol>
   </div>
 
+  <p class="monthly" id="monthly">Enter your <b>monthly</b> numbers below: what comes in and goes out in a typical month.</p>
   <div class="sum" id="sum">
     <div class="sum__in">
       <div><span>Money in</span><b id="sIn">$0</b></div>
@@ -251,7 +253,7 @@ function picture(){
   const t=$('#takeaway');
   if(left<0)t.innerHTML='<span class="eyebrow">What this means</span><p>'+(GRACE?'Grace\'s plan':'This plan')+' comes up <b>'+fmt(-left)+'</b> short each month'+(s?', after '+fmt(s)+' of planned savings':'')+'. Seeing it is the first step. The variable lines are where the room is.</p>';
   else if(keep===0)t.innerHTML='<span class="eyebrow">What this means</span><p>Every dollar that comes in goes out. Nothing is set aside yet.</p>';
-  else if(GRACE)t.innerHTML='<span class="eyebrow">What this means</span><p>After her fixed costs, her variable costs and her retirement saving, Grace has <b>'+fmt(left)+'</b> left over each month. That is money she could save.</p>';
+  else if(GRACE)t.innerHTML='<span class="eyebrow">What this means</span><p>After her fixed costs, her variable costs and her retirement saving, Grace has <b>'+fmt(left)+'</b> left over each month.'+(left>0?' That is money she could save.':'')+'</p>';
   else t.innerHTML='<span class="eyebrow">What this means</span><p>'+W+' keep'+(GRACE?'s':'')+' <b>'+fmt(keep)+'</b> a month, '+pct+'% of '+her+' take-home pay'+(s&&left>0?': '+fmt(s)+' of planned savings plus '+fmt(left)+' left over':s?', all of it planned savings':', what is left after spending')+'. Planned savings are the part '+who+' can count on, because they are decided before the spending happens.</p>';
   const GROUPS=[['Fixed costs',l=>l.fixed,'#8c1515'],['Variable costs',l=>!l.fixed,'#dc8831']];
   const slices=[];
@@ -277,7 +279,7 @@ function picture(){
     if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start saving more?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after her fixed costs, her variable costs and her retirement saving. She could add it to savings, put it toward a goal, or use it to start an emergency fund.</p>'}
     else{v.className='verdict no';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start saving more?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is still '+fmt(-left)+' more than money in, so there is nothing to set aside. ':'Every dollar that comes in goes out. ')+'Go back to the variable lines and think about which costs are essential and which could be reduced. Even a small amount each month gets her started.</p>'}
   }
-  else if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s your budget. Is there room to save more?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after your planned savings'+(s?' of '+fmt(s):'')+' and everything you spend. You could add it to your saving line, put it toward a goal, or keep it as breathing room. Which one is your call.</p>'}
+  else if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s your budget. Is there room to save more?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after your planned savings'+(s?' of '+fmt(s):'')+' and everything you spend. You could put it toward reducing debts, building an emergency fund, or making progress to a goal.</p>'}
   else{v.className='verdict no';v.innerHTML='<h3>Here\'s your budget. Is there room to save more?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is '+fmt(-left)+' more than money in. ':'Every dollar already has a place. ')+'Go back to the variable lines and think about which costs are essential and which could be reduced. Even a small change opens up room.</p>'}
 }
 // ---------- download ----------
@@ -294,6 +296,7 @@ if(GRACE){
   $('#back0').textContent='← Back to Grace\'s budget';$('#back1').textContent='Adjust Grace\'s budget';
 
   $('#ask b').textContent='Before you help Grace, ask yourself';
+  $('#monthly').innerHTML='These are Grace\'s <b>monthly</b> numbers: what comes in and goes out in a typical month.';
   $('#ask ol').innerHTML='<li>What does Grace want her budget to help her with?</li><li>Which of her costs are fixed, and which are variable?</li><li>Which costs are essential, and which could be reduced?</li>';
   $('#tSave .tbl__head small').textContent='Her retirement saving. Nothing for an emergency fund yet.';
   $('#tOut .tbl__head small').textContent='Everything she spends. Some is fixed, some is variable.';
