@@ -22,7 +22,7 @@ export default function QuestionPage({ params }) {
       <p className="crumbs"><Link href="/">Home</Link> / <Link href={`/situations/${sit.slug}`}>{sit.name}</Link></p>
       <div className="qhead narrow">
         <h1>{q.title}</h1>
-        <p className="muted" style={{ fontSize: 20 }}>{q.blurb} About {q.minutes} minutes.</p>
+        <p className="muted" style={{ fontSize: 20 }}>{q.blurb}</p>
       </div>
 
       {q.story && (
@@ -37,11 +37,15 @@ export default function QuestionPage({ params }) {
         <LearnPanel learn={q.learn} />
       </div>
 
-      {q.story && q.story.video && (
+      {q.video && (
         <section className="block">
-          <div className="video">
-            <div className="video__box" aria-label={q.story.video.title}><span>▶</span><b>{q.story.video.title}</b><small>{q.story.video.note}</small></div>
+          <div className="sechead">
+            <div>
+              <h2>{q.video.title}</h2>
+              <p className="muted">{q.video.lead}</p>
+            </div>
           </div>
+          <div className="video__box" aria-label={q.video.title}><span>▶</span><b>{q.video.title}</b><small>{q.video.note}</small></div>
         </section>
       )}
 
