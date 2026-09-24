@@ -25,9 +25,11 @@ p{margin:0}.muted{color:var(--muted)}.small{font-size:14px}
 button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offset:2px}
 
 /* ask yourself */
-.ask{background:#fff;border:2px solid var(--maroon);border-radius:14px;padding:16px 18px 16px 20px;position:relative}
-.ask b{display:block;color:var(--maroon);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-.ask ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:16px;font-weight:500}
+.ask{padding:2px 0 4px}
+.ask b{display:block;color:var(--navy);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.ask ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:16px;font-weight:500;counter-reset:q}
+.ask li{counter-increment:q;display:flex;gap:10px;align-items:baseline}
+.ask li::before{content:counter(q);flex:none;width:22px;height:22px;border-radius:50%;background:var(--teal-soft);color:var(--teal-text);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;transform:translateY(-2px)}
 
 /* tables */
 .tbl{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
@@ -133,7 +135,7 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
     </div>
   </div>
   <div class="alert" id="alert" hidden></div>
-  <p class="editkey" id="editkey" hidden><i>$ 600</i> Boxes like this one are the ones you can change.</p>
+  
 
   <div class="tbl tbl--in" id="tIn"><div class="tbl__head"><h3>Money in<small>What lands in your account after taxes.</small></h3><b id="tIn_t">$0</b></div><div class="rows"></div></div>
   <div class="tbl tbl--save" id="tSave"><div class="tbl__head"><h3>Planned savings<small>Saving you set aside on purpose, before you spend.</small></h3><b id="tSave_t">$0</b></div><div class="rows"></div></div>
@@ -283,7 +285,7 @@ $('#dl').onclick=()=>{
 if(GRACE){
   $('#lead1').textContent='Grace\'s numbers are filled in. Her paycheck, planned savings and fixed costs are set. The variable lines are yours to change.';
   $('#h1').textContent='How do I start making a budget?';
-  $('#editkey').hidden=false;
+
   $('#ask b').textContent='Before you help Grace, ask yourself';
   $('#ask ol').innerHTML='<li>What does Grace want her budget to help her with?</li><li>Which of her costs are fixed, and which are variable?</li><li>Which costs are essential, and which could be reduced?</li>';
   $('#tSave .tbl__head small').textContent='Her 401(k) contribution. It comes out before anything else.';
