@@ -19,7 +19,7 @@ export default function QuestionPage({ params }) {
   const sit = situations.find((s) => s.slug === q.situation);
   return (
     <div className="wrap">
-      <p className="crumbs"><Link href="/">Home</Link> / {sit.name}</p>
+      <p className="crumbs"><Link href="/">← Back to home</Link></p>
       <div className="qhead">
         <h1>{q.title}</h1>
         <p className="muted qhead__lead">{q.blurbLead && <b>{q.blurbLead} </b>}{q.blurb}</p>

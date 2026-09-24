@@ -10,7 +10,8 @@ export default function HomeTop() {
   const [q, setQ] = useState('');
   const [asked, setAsked] = useState('');
   const result = asked ? searchQuestions(asked) : null;
-  const submit = (e) => { e.preventDefault(); setAsked(q.trim()); };
+  // Research prototype: search is display only.
+  const submit = (e) => { e.preventDefault(); };
   const clear = () => { setQ(''); setAsked(''); };
   const ask = (text) => { setQ(text); setAsked(text); };
 
@@ -24,13 +25,13 @@ export default function HomeTop() {
           <form className="qbar" onSubmit={submit} role="search">
             <label className="sr-only" htmlFor="qbar-input">Type your money question</label>
             <svg className="qbar__ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
-            <input id="qbar-input" type="text" value={q} onChange={(e) => setQ(e.target.value)} placeholder="e.g. How much should I have saved for emergencies?" autoComplete="off" />
+            <input id="qbar-input" type="text" value={q} readOnly placeholder="e.g. How much should I have saved for emergencies?" autoComplete="off" />
             {asked && <button type="button" className="qbar__clear" onClick={clear} aria-label="Clear">×</button>}
             <button type="submit" className="qbar__go">Search</button>
           </form>
           <div className="tries">
             <span>Try:</span>
-            {EXAMPLES.map((t) => <button key={t} type="button" onClick={() => ask(t)}>{t}</button>)}
+            {EXAMPLES.map((t) => <button key={t} type="button" className="try--static">{t}</button>)}
           </div>
         </div>
       </section>
