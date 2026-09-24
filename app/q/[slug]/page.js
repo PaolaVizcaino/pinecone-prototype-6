@@ -28,11 +28,9 @@ export default function QuestionPage({ params }) {
       {q.story && (
         <section className="story" aria-label={`Meet ${q.story.who}`}>
           <div className="story__who">
-            {q.story.photo ? <img className="story__avatar" src={q.story.photo} alt={q.story.who} width={64} height={64} /> : <div className="story__avatar" aria-hidden="true">{q.story.who[0]}</div>}
-            <div>
-              <h2>{q.story.who}</h2>
-              <p className="muted">{q.story.role}</p>
-            </div>
+            {q.story.photo ? <img className="story__avatar" src={q.story.photo} alt={q.story.who} width={72} height={72} /> : <div className="story__avatar" aria-hidden="true">{q.story.who[0]}</div>}
+            <h2>{q.story.who}</h2>
+            <p className="muted">{q.story.role}</p>
           </div>
           <ul className="story__facts">{q.story.facts.map((f) => <li key={f}>{f}</li>)}</ul>
           <div className="story__goal"><span className="eyebrow">Her goal</span><p>{q.story.goal}</p></div>
@@ -52,7 +50,7 @@ export default function QuestionPage({ params }) {
               <p className="muted">{q.video.lead}</p>
             </div>
           </div>
-          <div className="video__box" aria-label={q.video.title}><span>▶</span><b>{q.video.title}</b><small>{q.video.note}</small></div>
+          <div className="video__player"><video controls preload="metadata" poster="/grace-poster.jpg" aria-label={q.video.title}><source src="/grace-budget.mp4" type="video/mp4" /></video></div>
         </section>
       )}
 
