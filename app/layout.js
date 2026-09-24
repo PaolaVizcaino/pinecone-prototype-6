@@ -1,5 +1,6 @@
 import './globals.css';
 import Link from 'next/link';
+import DeadNav from '@/components/DeadNav';
 
 export const metadata = {
   title: 'Pinecone by Stanford · Money decisions, tried before you make them',
@@ -18,11 +19,7 @@ export default function RootLayout({ children }) {
         <header className="nav">
           <div className="nav-in">
             <Link href="/" className="brand" aria-label="Pinecone by Stanford, home"><img src="/logo.png" alt="Pinecone by Stanford" width={150} height={46} /></Link>
-            <nav aria-label="Site">
-              <Link href="/videos">Videos</Link>
-              <Link href="/calculators">Calculators</Link>
-              <a href="https://ifdm.stanford.edu" target="_blank" rel="noreferrer">Stanford IFDM</a>
-            </nav>
+            <DeadNav />
           </div>
         </header>
         <main>{children}</main>
