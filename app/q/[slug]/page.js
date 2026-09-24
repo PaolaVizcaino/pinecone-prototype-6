@@ -19,7 +19,7 @@ export default function QuestionPage({ params }) {
   const sit = situations.find((s) => s.slug === q.situation);
   return (
     <div className="wrap">
-      <p className="crumbs"><Link href="/">Home</Link> / <Link href={`/situations/${sit.slug}`}>{sit.name}</Link></p>
+      <p className="crumbs"><Link href="/">Home</Link> / {sit.name}</p>
       <div className="qhead">
         <h1>{q.title}</h1>
         <p className="muted qhead__lead">{q.blurbLead && <b>{q.blurbLead} </b>}{q.blurb}</p>
@@ -59,7 +59,6 @@ export default function QuestionPage({ params }) {
       <section className="block">
         <div className="sechead">
           <h2>Where to next</h2>
-          <Link className="linkbtn" href={`/situations/${sit.slug}`}>More on: {sit.name} →</Link>
         </div>
         <div className="modules">
           {q.related.map((slug) => <QuestionCard key={slug} slug={slug} q={questions[slug]} />)}

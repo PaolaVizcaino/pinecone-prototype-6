@@ -10,10 +10,10 @@ const Clock = () => (
 export default function QuestionCard({ slug, q }) {
   const live = liveQuestions.includes(slug);
   // Research prototype: cards that are not built look and hover like the live one, but go nowhere.
-  const Tag = live ? Link : 'a';
-  const props = live ? { href: `/q/${slug}` } : { href: '#', onClick: (e) => e.preventDefault() };
+  const Tag = live ? Link : 'div';
+  const props = live ? { href: `/q/${slug}` } : {};
   return (
-    <Tag {...props} className="module" style={{ '--c': q.hex }}>
+    <Tag {...props} className={live ? 'module' : 'module module--static'} style={{ '--c': q.hex }}>
       <div className="module__body">
         <div className="module__tags">
           <span className="tag tag--topic">{q.topic}</span>

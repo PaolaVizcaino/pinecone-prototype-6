@@ -34,7 +34,7 @@ export default function SituationPage({ params }) {
         <div className="modules">
           {live.map(([, slug]) => <QuestionCard key={slug} slug={slug} q={questions[slug]} />)}
           {soon.map(([text]) => (
-            <a key={text} href="#" className="module" style={{ '--c': s.hex }}>
+            <div key={text} className="module module--static" style={{ '--c': s.hex }}>
               <div className="module__body">
                 <div className="module__tags">
                   <span className="tag tag--topic">{s.topic}</span>
@@ -42,7 +42,7 @@ export default function SituationPage({ params }) {
                 </div>
                 <h3>{text}</h3>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </section>

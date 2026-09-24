@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
         <footer className="foot">
           <div className="wrap">
             <p><b>Pinecone</b> is free financial education from Stanford&apos;s Initiative for Financial Decision-Making. It helps you think through money decisions. It doesn&apos;t give financial, legal, or tax advice.</p>
-            <p className="tiny">Research prototype 6. <Link href="/start">See how people arrive here</Link></p>
+            
           </div>
         </footer>
       </body>

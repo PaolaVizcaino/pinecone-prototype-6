@@ -229,3 +229,5 @@ a.linkbtn{text-decoration:none}
 .qhead__lead{font-size:17px;max-width:none}.qhead__lead b{color:var(--navy-deep)}
 
 .learn__steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}.learn__steps b{color:var(--ink);font-weight:700}
+
+.module--static,.sitcard--static{cursor:default}.module--static:hover,.sitcard--static:hover{transform:none;box-shadow:var(--shadow);border-color:var(--line)}.sitcard--static:hover{box-shadow:none}

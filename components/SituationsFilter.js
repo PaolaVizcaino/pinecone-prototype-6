@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
 import { situations, topicOrder } from '@/lib/content';
 
 // Topic tabs filter the situation cards. Default shows everything.
@@ -19,11 +18,11 @@ export default function SituationsFilter() {
       </div>
       <div className="sitgrid" aria-live="polite">
         {shown.map((s) => (
-          <Link key={s.slug} href={`/situations/${s.slug}`} className="sitcard" style={{ '--c': s.hex }}>
+          <div key={s.slug} className="sitcard sitcard--static" style={{ '--c': s.hex }}>
             <span className="tag tag--topic">{s.topic}</span>
             <h3>{s.name}</h3>
             <p>{s.blurb}</p>
-          </Link>
+          </div>
         ))}
       </div>
     </>
