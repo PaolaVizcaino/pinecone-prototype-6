@@ -20,9 +20,9 @@ export default function QuestionPage({ params }) {
   return (
     <div className="wrap">
       <p className="crumbs"><Link href="/">Home</Link> / <Link href={`/situations/${sit.slug}`}>{sit.name}</Link></p>
-      <div className="qhead narrow">
+      <div className="qhead">
         <h1>{q.title}</h1>
-        <p className="muted" style={{ fontSize: 20 }}>{q.blurb}</p>
+        <p className="muted qhead__lead">{q.blurb}</p>
       </div>
 
       {q.story && (
