@@ -126,8 +126,8 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
     <b>Before you start, ask yourself</b>
     <ol>
       <li>What do I want this budget to do for me?</li>
-      <li>Which costs stay the same every month, and which ones move?</li>
-      <li>What amount could I set aside every month, before anything else?</li>
+      <li>Which of my costs are fixed, and which are variable?</li>
+      <li>Which costs are essential, and which could be reduced?</li>
     </ol>
   </div>
 
@@ -283,12 +283,9 @@ function picture(){
   else{v.className='verdict no';v.innerHTML='<h3>Here\'s your budget. Is there room to save more?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is '+fmt(-left)+' more than money in. ':'Every dollar already has a place. ')+'Go back to the variable lines and think about which costs are essential and which could be reduced. Even a small change opens up room.</p>'}
 }
 // ---------- download ----------
-$('#dl').onclick=()=>{
-  const {i,s,o,left}=totals();const who=GRACE?"Grace's budget":'My budget';
-  const sec=(t,side)=>t+'\n'+LINES.filter(l=>l.side===side).map(l=>'  '+l.n.padEnd(32)+fmt(l.v).padStart(10)).join('\n')+'\n';
-  const txt=who+' (Pinecone by Stanford)\n'+new Date().toLocaleDateString('en-US')+'\n\n'+sec('MONEY IN','in')+'\n'+sec('PLANNED SAVINGS','save')+'\n'+sec('MONEY OUT','out')+'\nMoney in: '+fmt(i)+'\nPlanned savings: '+fmt(s)+'\nMoney out: '+fmt(o)+'\nLeft over: '+(left<0?'-':'')+fmt(Math.abs(left))+'\n\nThis is a plan, not advice. Review it when life changes.\n';
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=(GRACE?'grace-budget':'my-budget')+'.txt';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
-};
+// Research prototype: the download link is visible but does nothing.
+$('#dl').onclick=(e)=>{e.preventDefault()};
+
 // ---------- Grace copy ----------
 if(GRACE){
   $('#lead1').textContent='Grace\'s numbers are filled in. Her paycheck and fixed costs are set. The variable lines are yours to change.';
