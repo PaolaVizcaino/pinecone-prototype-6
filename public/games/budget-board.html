@@ -81,11 +81,17 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 .takeaway p{font-size:16px}
 .piegrid{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center}
 .pie{width:100%;max-width:220px;height:auto}
-.pielegend{display:flex;flex-direction:column;gap:5px;font-size:14px}
-.pielegend div{display:grid;grid-template-columns:12px 1fr auto auto;gap:10px;align-items:center;font-variant-numeric:tabular-nums}
-.pielegend i{width:12px;height:12px;border-radius:3px;display:block}
-.pielegend__head{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6b7075}
-.pielegend b{min-width:36px;text-align:right}
+.pielegend{display:flex;flex-direction:column;font-size:14px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.pielegend__head,.lg{display:grid;grid-template-columns:14px 1fr 72px 52px;gap:10px;align-items:center;padding:8px 12px;font-variant-numeric:tabular-nums}
+.pielegend__head{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6b7075;background:var(--sunken)}
+.lg{border:0;border-top:1px solid #eef1f3;text-align:left;font:inherit;font-size:14px;background:#fff;color:var(--ink);width:100%;cursor:default;border-radius:0}
+.lg i{width:12px;height:12px;border-radius:3px;display:block}
+.lg span:nth-child(3){text-align:right;color:var(--muted)}.lg b{text-align:right}
+.lg.grp{cursor:pointer;font-weight:600}.lg.grp:hover,.lg.grp.on{background:var(--teal-soft)}
+.lg.grp .car{font-size:11px;color:#6b7075;margin-left:6px;font-weight:500;white-space:nowrap}
+.lg.lgsub{padding-left:34px;background:#fafbfb;color:var(--muted);font-size:13px}.lg.lgsub i{visibility:hidden}
+.lg.lgsub[hidden]{display:none}
+.pie path{cursor:pointer;transition:opacity .15s}.pie.dim path{opacity:.35}.pie path.on{opacity:1}
 .verdict{background:#fff;border:2px solid var(--teal);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
 .verdict.no{border-color:#e0a63a}
 .verdict h3{font-size:19px}
@@ -145,7 +151,7 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
     <svg class="pie" id="pie" viewBox="0 0 240 240" role="img" aria-label="Budget as shares of take-home income"></svg>
     <div class="pielegend" id="legend"></div>
   </div>
-  <p class="small muted">Each line as a share of take-home income. Warm colors are spending, teal is saving, grey is what's left over.</p>
+  <p class="small muted">Each category as a share of take-home income. Click a category to see the lines inside it.</p>
   <div class="verdict" id="verdict"></div>
   <div class="btns"><button class="cta second" id="back1">Adjust the budget</button><button class="cta" id="dl">Download this budget</button></div>
   <p class="small muted">The download is a simple text file you can keep or paste into notes.</p>
@@ -239,15 +245,25 @@ function picture(){
   else if(keep===0)t.innerHTML='<span class="eyebrow">What this means</span><p>Every dollar that comes in goes out. Nothing is set aside yet.</p>';
   else if(GRACE)t.innerHTML='<span class="eyebrow">What this means</span><p>After her fixed costs, her everyday costs and her 401(k), Grace has <b>'+fmt(left)+'</b> left over each month. That is the money that could start her emergency fund.</p>';
   else t.innerHTML='<span class="eyebrow">What this means</span><p>'+W+' keep'+(GRACE?'s':'')+' <b>'+fmt(keep)+'</b> a month, '+pct+'% of '+her+' take-home pay'+(s&&left>0?': '+fmt(s)+' of planned savings plus '+fmt(left)+' left over':s?', all of it planned savings':', what is left after spending')+'. Planned savings are the part '+who+' can count on, because they are decided before the spending happens.</p>';
-  const rows=LINES.filter(l=>l.side==='out'&&l.v>0).sort((a,b)=>b.v-a.v);
-  const slices=rows.map((l,k)=>({n:l.n,v:l.v,c:WARM[Math.min(k,WARM.length-1)]}));
-  if(s>0)slices.push({n:'Planned savings',v:s,c:'#007a8a'});if(left>0)slices.push({n:'Left over',v:left,c:'#c9cfd4'});
+  const GROUPS=[['Housing and bills','Bills','#8c1515'],['Debt payments','Debt payments','#c05f2a'],['Everyday spending','Everyday','#dc9f52']];
+  const slices=[];
+  GROUPS.forEach(([n,g,c])=>{const subs=LINES.filter(l=>l.side==='out'&&l.g===g&&l.v>0).sort((a,b)=>b.v-a.v);const v=subs.reduce((a,l)=>a+l.v,0);if(v>0)slices.push({n,v,c,subs})});
+  if(s>0)slices.push({n:'Planned savings',v:s,c:'#007a8a',subs:LINES.filter(l=>l.side==='save'&&l.v>0)});
+  if(left>0)slices.push({n:'Left over',v:left,c:'#c9cfd4',subs:[]});
   const total=Math.max(i,s+o)||1;let ang=-Math.PI/2,svg='';
-  slices.forEach(x=>{const a=x.v/total*2*Math.PI,x1=120+100*Math.cos(ang),y1=120+100*Math.sin(ang),x2=120+100*Math.cos(ang+a),y2=120+100*Math.sin(ang+a);
-    svg+=a>=2*Math.PI-0.001?'<circle cx="120" cy="120" r="100" fill="'+x.c+'"/>':'<path d="M120 120 L'+x1.toFixed(1)+' '+y1.toFixed(1)+' A100 100 0 '+(a>Math.PI?1:0)+' 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+' Z" fill="'+x.c+'" stroke="#fff" stroke-width="2"/>';ang+=a});
+  slices.forEach((x,k)=>{const a=x.v/total*2*Math.PI,x1=120+100*Math.cos(ang),y1=120+100*Math.sin(ang),x2=120+100*Math.cos(ang+a),y2=120+100*Math.sin(ang+a);
+    const tip='<title>'+x.n+': '+fmt(x.v)+' ('+Math.round(x.v/i*100)+'%)</title>';
+    svg+=a>=2*Math.PI-0.001?'<circle cx="120" cy="120" r="100" fill="'+x.c+'"/>':'<path data-k="'+k+'" d="M120 120 L'+x1.toFixed(1)+' '+y1.toFixed(1)+' A100 100 0 '+(a>Math.PI?1:0)+' 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+' Z" fill="'+x.c+'" stroke="#fff" stroke-width="2">'+tip+'</path>';ang+=a});
   svg+='<circle cx="120" cy="120" r="58" fill="#fff"/><text x="120" y="116" text-anchor="middle" font-size="22" font-weight="800" fill="#0f2c3c">'+fmt(i)+'</text><text x="120" y="136" text-anchor="middle" font-size="12" fill="#4a4f55">take-home</text>';
-  $('#pie').innerHTML=svg;
-  $('#legend').innerHTML='<div class="pielegend__head"><span></span><span>$ / month</span><span>share</span></div>'+slices.map(x=>'<div><i style="background:'+x.c+'"></i><span>'+x.n+'</span><span>'+fmt(x.v)+'</span><b>'+Math.round(x.v/i*100)+'%</b></div>').join('');
+  const pie=$('#pie');pie.innerHTML=svg;pie.classList.remove('dim');
+  const pc=v=>Math.round(v/i*100)+'%';
+  $('#legend').innerHTML='<div class="pielegend__head"><span></span><span>Category</span><span>$ / month</span><span>Share</span></div>'+slices.map((x,k)=>
+    (x.subs.length>1?'<button type="button" class="lg grp" data-k="'+k+'" aria-expanded="false"><i style="background:'+x.c+'"></i><span>'+x.n+'<span class="car">▸</span></span><span>'+fmt(x.v)+'</span><b>'+pc(x.v)+'</b></button>':'<div class="lg" data-k="'+k+'"><i style="background:'+x.c+'"></i><span>'+x.n+'</span><span>'+fmt(x.v)+'</span><b>'+pc(x.v)+'</b></div>')+
+    x.subs.map(l=>'<div class="lg lgsub" data-p="'+k+'" hidden><i></i><span>'+l.n+'</span><span>'+fmt(l.v)+'</span><b>'+pc(l.v)+'</b></div>').join('')).join('');
+  const hi=(k,on)=>{pie.classList.toggle('dim',on);pie.querySelectorAll('path').forEach(p=>p.classList.toggle('on',on&&p.dataset.k===String(k)))};
+  $('#legend').querySelectorAll('.lg[data-k]').forEach(el=>{el.addEventListener('mouseenter',()=>hi(el.dataset.k,true));el.addEventListener('mouseleave',()=>hi(0,false))});
+  $('#legend').querySelectorAll('.lg.grp').forEach(btn=>btn.onclick=()=>{const open=btn.getAttribute('aria-expanded')!=='true';btn.setAttribute('aria-expanded',open);btn.classList.toggle('on',open);btn.querySelector('.car').textContent=open?'▾':'▸';$('#legend').querySelectorAll('.lg.lgsub[data-p="'+btn.dataset.k+'"]').forEach(r=>r.hidden=!open)});
+  pie.querySelectorAll('path').forEach(p=>{p.addEventListener('mouseenter',()=>hi(p.dataset.k,true));p.addEventListener('mouseleave',()=>hi(0,false));p.onclick=()=>{const b=$('#legend').querySelector('.lg.grp[data-k="'+p.dataset.k+'"]');if(b&&b.getAttribute('aria-expanded')!=='true')b.click()}});
   const v=$('#verdict');
   if(GRACE){
     if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start building an emergency fund?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after her bills, her everyday costs and her 401(k). If she moves it into a savings account every month, that is her emergency fund starting. In a year it would be about <b>'+fmt(left*12)+'</b>, so the next surprise does not have to go on her credit card.</p>'}
