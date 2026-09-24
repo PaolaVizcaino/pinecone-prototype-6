@@ -95,6 +95,9 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 footer{font-size:13px;color:var(--muted);margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
 @media (max-width:560px){.sum__in{grid-template-columns:1fr 1fr}.piegrid{grid-template-columns:1fr}.btns{grid-template-columns:1fr}.r{grid-template-columns:1fr auto auto}.r__name em{display:none}}
 body.grace .addrow{display:none}
+body.grace .r__amt input:not([readonly]){border:2px solid var(--teal);background:var(--teal-soft)}
+body.grace .r__amt input:not([readonly]):focus{background:#fff}
+.editkey{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--teal-text)}.editkey i{width:26px;height:16px;border:2px solid var(--teal);background:var(--teal-soft);border-radius:5px}
 </style>
 
 <div class="bar"><b>Pinecone</b><span>Research prototype</span></div>
@@ -118,16 +121,17 @@ body.grace .addrow{display:none}
   <div class="sum" id="sum">
     <div class="sum__in">
       <div><span>Money in</span><b id="sIn">$0</b></div>
-      <div><span>Pay yourself first</span><b id="sSave">$0</b></div>
+      <div><span>Planned savings</span><b id="sSave">$0</b></div>
       <div><span>Money out</span><b id="sOut">$0</b></div>
       <div id="sLeftBox"><span>Left over</span><b id="sLeft">$0</b></div>
     </div>
   </div>
   <div class="alert" id="alert" hidden></div>
+  <p class="editkey" id="editkey" hidden><i></i> Outlined boxes are the ones you can change.</p>
 
   <div class="tbl tbl--in" id="tIn"><div class="tbl__head"><h3>Money in<small>What lands in your account after taxes.</small></h3><b id="tIn_t">$0</b></div><div class="rows"></div></div>
-  <div class="tbl tbl--save" id="tSave"><div class="tbl__head"><h3>Pay yourself first<small>Saving you set aside before you spend. A bill you owe yourself.</small></h3><b id="tSave_t">$0</b></div><div class="rows"></div></div>
-  <div class="tbl tbl--out" id="tOut"><div class="tbl__head"><h3>Money out<small>Everything you spend. Some stays the same, some varies.</small></h3><b id="tOut_t">$0</b></div><div class="rows"></div></div>
+  <div class="tbl tbl--save" id="tSave"><div class="tbl__head"><h3>Planned savings<small>Saving you set aside on purpose, before you spend.</small></h3><b id="tSave_t">$0</b></div><div class="rows"></div></div>
+  <div class="tbl tbl--out" id="tOut"><div class="tbl__head"><h3>Money out<small>Everything you spend. Some is fixed, some is variable.</small></h3><b id="tOut_t">$0</b></div><div class="rows"></div></div>
 
   <div class="nav"><button class="cta" id="toPic" disabled>Show me the picture</button></div>
 </section>
@@ -159,7 +163,7 @@ if(GRACE)document.body.classList.add('grace');
 const LINES=[
  {id:'pay',n:'Paycheck (after taxes)',side:'in',g:'',v:GRACE?4300:0,lock:1},
  {id:'side',n:'Side income, tips or gigs',side:'in',g:'',v:0,lock:1,hideG:1},
- {id:'ef',n:'Emergency fund',side:'save',g:'',v:GRACE?150:0,lock:1},
+ {id:'ef',n:'Emergency fund',side:'save',g:'',v:0,lock:1,hideG:1},
  {id:'ret',n:'Retirement (401k, IRA)',side:'save',g:'',v:GRACE?300:0,lock:1},
  {id:'goal',n:'A goal (trip, car, home)',side:'save',g:'',v:0,lock:1,hideG:1},
  {id:'rent',n:'Rent or mortgage',side:'out',g:'Bills',fixed:1,v:GRACE?1500:0,lock:1},
@@ -183,7 +187,7 @@ let custom=0;
 
 function row(l){
   const r=document.createElement('div');r.className='r';r.id='r_'+l.id;
-  const tag=l.side==='out'?(l.fixed?' <em>same each month</em>':' <em class="var">varies</em>'):'';
+  const tag=l.side==='out'?(l.fixed?' <em>fixed</em>':' <em class="var">variable</em>'):'';
   r.innerHTML='<span class="r__name">'+l.n+tag+'</span><span class="r__amt"><span>$</span><input type="text" inputmode="numeric" aria-label="'+l.n+' per month" placeholder="0"></span><button type="button" class="r__x" aria-label="Remove '+l.n+'"'+(l.custom?'':' disabled')+'>×</button>';
   const inp=r.querySelector('input');if(l.v)inp.value=l.v.toLocaleString('en-US');
   if(GRACE&&l.lock){inp.readOnly=true;inp.tabIndex=-1}
@@ -216,7 +220,7 @@ function calc(){
   $('#sLeftBox').className=!i&&!o&&!s?'':left<0?'bad':'good';
   $('#tIn_t').textContent=fmt(i);$('#tSave_t').textContent=fmt(s);$('#tOut_t').textContent=fmt(o);
   const a=$('#alert');
-  if(left<0){a.hidden=false;a.className='alert';a.innerHTML=WARNSVG+'<span><b>'+(GRACE?'Grace\'s':'Your')+' money out is '+fmt(-left)+' more than money in.</b> '+(GRACE?'Help her adjust. The lines marked <i>varies</i> are the ones she can change. Which of them are essential?':'Look at the lines marked <i>varies</i>. Which of them are essential this month?')+'</span>'}
+  if(left<0){a.hidden=false;a.className='alert';a.innerHTML=WARNSVG+'<span><b>'+(GRACE?'Grace\'s':'Your')+' money out is '+fmt(-left)+' more than money in.</b> '+(GRACE?'Help her adjust. The <i>variable</i> lines are the ones you can change. Which costs are essential, and which could be reduced?':'Look at the <i>variable</i> lines. Which costs are essential, and which could be reduced?')+'</span>'}
   else if(i&&(o||s)&&left>=0){a.hidden=false;a.className='alert ok';a.innerHTML=OKSVG+'<span><b>'+(GRACE?'Grace\'s budget balances.':'Your budget balances.')+'</b> '+(left>0?fmt(left)+' is left over after saving and spending.':'Every dollar has a place, with nothing left over.')+'</span>'}
   else a.hidden=true;
   $('#toPic').disabled=!(i>0&&o>0);
@@ -229,14 +233,15 @@ $('#toPic').onclick=()=>{picture();show('s2')};
 function picture(){
   const {i,s,o,left}=totals(),keep=s+Math.max(0,left),pct=i?Math.round(keep/i*100):0,who=GRACE?'Grace':'you',W=GRACE?'She':'You',her=GRACE?'her':'your';
   $('#h2').textContent=GRACE?'Where Grace\'s money goes':'Where your money goes';
-  $('#stats').innerHTML=[['Money in',fmt(i),''],['Pay yourself first',fmt(s),'good'],['Money out',fmt(o),''],['Left over',(left<0?'-':'')+fmt(Math.abs(left)),left<0?'bad':'good']].map(x=>'<div class="stat '+x[2]+'"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('');
+  $('#stats').innerHTML=[['Money in',fmt(i),''],['Planned savings',fmt(s),'good'],['Money out',fmt(o),''],['Left over',(left<0?'-':'')+fmt(Math.abs(left)),left<0?'bad':'good']].map(x=>'<div class="stat '+x[2]+'"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>').join('');
   const t=$('#takeaway');
-  if(left<0)t.innerHTML='<span class="eyebrow">What this means</span><p>'+(GRACE?'Grace\'s plan':'This plan')+' comes up <b>'+fmt(-left)+'</b> short each month'+(s?', even before the '+fmt(s)+' set aside for '+(GRACE?'herself':'yourself'):'')+'. Seeing it is the first step. The lines that vary are where the room is.</p>';
+  if(left<0)t.innerHTML='<span class="eyebrow">What this means</span><p>'+(GRACE?'Grace\'s plan':'This plan')+' comes up <b>'+fmt(-left)+'</b> short each month'+(s?', after '+fmt(s)+' of planned savings':'')+'. Seeing it is the first step. The variable lines are where the room is.</p>';
   else if(keep===0)t.innerHTML='<span class="eyebrow">What this means</span><p>Every dollar that comes in goes out. Nothing is set aside yet.</p>';
-  else t.innerHTML='<span class="eyebrow">What this means</span><p>'+W+' keep'+(GRACE?'s':'')+' <b>'+fmt(keep)+'</b> a month, '+pct+'% of '+her+' take-home pay'+(s&&left>0?': '+fmt(s)+' paid to '+(GRACE?'her':'you')+'rself first plus '+fmt(left)+' left over':s?', all of it set aside on purpose':', what is left after spending')+'. The saving line is the part '+who+' can count on, because it happens before the spending does.</p>';
+  else if(GRACE)t.innerHTML='<span class="eyebrow">What this means</span><p>After her fixed costs, her everyday costs and her 401(k), Grace has <b>'+fmt(left)+'</b> left over each month. That is the money that could start her emergency fund.</p>';
+  else t.innerHTML='<span class="eyebrow">What this means</span><p>'+W+' keep'+(GRACE?'s':'')+' <b>'+fmt(keep)+'</b> a month, '+pct+'% of '+her+' take-home pay'+(s&&left>0?': '+fmt(s)+' of planned savings plus '+fmt(left)+' left over':s?', all of it planned savings':', what is left after spending')+'. Planned savings are the part '+who+' can count on, because they are decided before the spending happens.</p>';
   const rows=LINES.filter(l=>l.side==='out'&&l.v>0).sort((a,b)=>b.v-a.v);
   const slices=rows.map((l,k)=>({n:l.n,v:l.v,c:WARM[Math.min(k,WARM.length-1)]}));
-  if(s>0)slices.push({n:'Pay yourself first',v:s,c:'#007a8a'});if(left>0)slices.push({n:'Left over',v:left,c:'#c9cfd4'});
+  if(s>0)slices.push({n:'Planned savings',v:s,c:'#007a8a'});if(left>0)slices.push({n:'Left over',v:left,c:'#c9cfd4'});
   const total=Math.max(i,s+o)||1;let ang=-Math.PI/2,svg='';
   slices.forEach(x=>{const a=x.v/total*2*Math.PI,x1=120+100*Math.cos(ang),y1=120+100*Math.sin(ang),x2=120+100*Math.cos(ang+a),y2=120+100*Math.sin(ang+a);
     svg+=a>=2*Math.PI-0.001?'<circle cx="120" cy="120" r="100" fill="'+x.c+'"/>':'<path d="M120 120 L'+x1.toFixed(1)+' '+y1.toFixed(1)+' A100 100 0 '+(a>Math.PI?1:0)+' 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+' Z" fill="'+x.c+'" stroke="#fff" stroke-width="2"/>';ang+=a});
@@ -244,22 +249,28 @@ function picture(){
   $('#pie').innerHTML=svg;
   $('#legend').innerHTML='<div class="pielegend__head"><span></span><span>$ / month</span><span>share</span></div>'+slices.map(x=>'<div><i style="background:'+x.c+'"></i><span>'+x.n+'</span><span>'+fmt(x.v)+'</span><b>'+Math.round(x.v/i*100)+'%</b></div>').join('');
   const v=$('#verdict');
-  if(keep>0){v.className='verdict';v.innerHTML='<h3>Here\'s '+(GRACE?'Grace\'s':'your')+' budget. Is there room to save or invest?</h3><div class="big">Yes: '+fmt(keep)+' a month</div><p>'+(s?fmt(s)+' already goes to '+(GRACE?'her':'your')+' saving lines'+(left>0?', and '+fmt(left)+' is left over on top':'')+'.':fmt(left)+' is left over after spending.')+' An emergency fund usually comes first. Once that is in place, the same monthly amount can go toward longer goals or investing. Whether to, and how much, is '+her+' call.</p>'}
-  else{v.className='verdict no';v.innerHTML='<h3>Here\'s '+(GRACE?'Grace\'s':'your')+' budget. Is there room to save or invest?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is '+fmt(-left)+' more than money in, so nothing is kept. ':'Everything that comes in goes out. ')+'Go back to the lines that vary and think about what is essential. Even a small saving line changes the answer.</p>'}
+  if(GRACE){
+    if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start building an emergency fund?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after her bills, her everyday costs and her 401(k). If she moves it into a savings account every month, that is her emergency fund starting. In a year it would be about <b>'+fmt(left*12)+'</b>, so the next surprise does not have to go on her credit card.</p>'}
+    else{v.className='verdict no';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start building an emergency fund?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is still '+fmt(-left)+' more than money in, so there is nothing to set aside. ':'Every dollar that comes in goes out. ')+'Go back to the variable lines and think about which costs are essential and which could be reduced. Even a small amount each month gets her started.</p>'}
+  }
+  else if(keep>0){v.className='verdict';v.innerHTML='<h3>Here\'s your budget. Is there room to save or invest?</h3><div class="big">Yes: '+fmt(keep)+' a month</div><p>'+(s?fmt(s)+' is already planned savings'+(left>0?', and '+fmt(left)+' is left over on top':'')+'.':fmt(left)+' is left over after spending.')+' An emergency fund usually comes first. Once that is in place, the same monthly amount can go toward longer goals or investing. Whether to, and how much, is '+her+' call.</p>'}
+  else{v.className='verdict no';v.innerHTML='<h3>Here\'s your budget. Is there room to save or invest?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is '+fmt(-left)+' more than money in, so nothing is kept. ':'Everything that comes in goes out. ')+'Go back to the variable lines and think about which costs are essential and which could be reduced. Even a small saving line changes the answer.</p>'}
 }
 // ---------- download ----------
 $('#dl').onclick=()=>{
   const {i,s,o,left}=totals();const who=GRACE?"Grace's budget":'My budget';
   const sec=(t,side)=>t+'\n'+LINES.filter(l=>l.side===side).map(l=>'  '+l.n.padEnd(32)+fmt(l.v).padStart(10)).join('\n')+'\n';
-  const txt=who+' (Pinecone by Stanford)\n'+new Date().toLocaleDateString('en-US')+'\n\n'+sec('MONEY IN','in')+'\n'+sec('PAY YOURSELF FIRST','save')+'\n'+sec('MONEY OUT','out')+'\nMoney in: '+fmt(i)+'\nPay yourself first: '+fmt(s)+'\nMoney out: '+fmt(o)+'\nLeft over: '+(left<0?'-':'')+fmt(Math.abs(left))+'\n\nThis is a plan, not advice. Review it when life changes.\n';
+  const txt=who+' (Pinecone by Stanford)\n'+new Date().toLocaleDateString('en-US')+'\n\n'+sec('MONEY IN','in')+'\n'+sec('PLANNED SAVINGS','save')+'\n'+sec('MONEY OUT','out')+'\nMoney in: '+fmt(i)+'\nPlanned savings: '+fmt(s)+'\nMoney out: '+fmt(o)+'\nLeft over: '+(left<0?'-':'')+fmt(Math.abs(left))+'\n\nThis is a plan, not advice. Review it when life changes.\n';
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));a.download=(GRACE?'grace-budget':'my-budget')+'.txt';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
 };
 // ---------- Grace copy ----------
 if(GRACE){
-  $('#lead1').textContent='Grace\'s numbers are filled in. Her paycheck, saving and bills are set. The lines that vary are yours to change.';
+  $('#lead1').textContent='Grace\'s numbers are filled in. Her paycheck, planned savings and fixed costs are set. The variable lines are yours to change.';
+  $('#h1').textContent='How do I start making a budget?';
+  $('#editkey').hidden=false;
   $('#ask b').textContent='Before you help Grace, ask yourself';
-  $('#ask ol').innerHTML='<li>What does she want this budget to do for her?</li><li>Which of her costs stay the same, and which ones move?</li><li>Which everyday costs are essential, and which could shrink?</li>';
-  $('#tSave .tbl__head small').textContent='Her emergency fund and 401(k). Set aside before anything else.';
+  $('#ask ol').innerHTML='<li>What does Grace want her budget to help her with?</li><li>Which of her costs are fixed, and which are variable?</li><li>Which costs are essential, and which could be reduced?</li>';
+  $('#tSave .tbl__head small').textContent='Her 401(k) contribution. It comes out before anything else.';
 }
 build();
 })();
