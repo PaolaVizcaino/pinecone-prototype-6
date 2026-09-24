@@ -28,7 +28,7 @@ export default function QuestionPage({ params }) {
       {q.story && (
         <section className="story" aria-label={`Meet ${q.story.who}`}>
           <div className="story__who">
-            <div className="story__avatar" aria-hidden="true">{q.story.who[0]}</div>
+            {q.story.photo ? <img className="story__avatar" src={q.story.photo} alt={q.story.who} width={64} height={64} /> : <div className="story__avatar" aria-hidden="true">{q.story.who[0]}</div>}
             <div>
               <h2>{q.story.who}</h2>
               <p className="muted">{q.story.role}</p>
