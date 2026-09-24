@@ -226,4 +226,4 @@ a.linkbtn{text-decoration:none}
 .ftab:hover{border-color:var(--c);color:var(--ink)}
 .ftab[aria-selected=true]{background:var(--c);border-color:var(--c);color:#fff}
 .ftab[aria-selected=true] i{background:#fff}
-.qhead__lead{font-size:17px;max-width:none}
+.qhead__lead{font-size:17px;max-width:none}.qhead__lead b{color:var(--navy-deep)}

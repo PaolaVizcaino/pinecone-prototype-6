@@ -25,7 +25,7 @@ p{margin:0}.muted{color:var(--muted)}.small{font-size:14px}
 button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offset:2px}
 
 /* ask yourself */
-.ask{padding:2px 0 4px}
+.ask{padding:10px 8px 14px}
 .ask b{display:block;color:var(--navy);font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
 .ask ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:16px;font-weight:500;counter-reset:q}
 .ask li{counter-increment:q;display:flex;gap:10px;align-items:baseline}
@@ -297,7 +297,7 @@ build();
 </script>
 <script>
 (function(){
-  if(window.self!==window.top){var st=document.createElement('style');st.textContent='#h1,#lead1{display:none}html,body{background:#fff;height:auto;min-height:0}.wrap{max-width:none;padding:12px 4px 16px}.sum{top:0}';document.body.appendChild(st);var b=document.querySelector('.bar');if(b)b.hidden=true;var f=document.querySelector('footer');if(f)f.hidden=true;
+  if(window.self!==window.top){var st=document.createElement('style');st.textContent='#h1,#lead1{display:none}html,body{background:#fff;height:auto;min-height:0}.wrap{max-width:none;padding:18px 12px 20px}.sum{top:0}';document.body.appendChild(st);var b=document.querySelector('.bar');if(b)b.hidden=true;var f=document.querySelector('footer');if(f)f.hidden=true;
     var send=function(){parent.postMessage({pineconeHeight:document.body.scrollHeight},'*')};
     new ResizeObserver(send).observe(document.body);window.addEventListener('load',send);document.addEventListener('click',function(){setTimeout(send,60)});document.addEventListener('input',function(){setTimeout(send,60)});}
 })();

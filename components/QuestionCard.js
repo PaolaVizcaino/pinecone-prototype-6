@@ -20,7 +20,7 @@ export default function QuestionCard({ slug, q }) {
           <span className="popular">Try it</span>
         </div>
         <h3>{q.title}</h3>
-        <p>{q.blurb}</p>
+        <p>{q.blurbLead && <b>{q.blurbLead} </b>}{q.blurb}</p>
         <div className="meta"><span><Clock /> ~{q.minutes} min</span></div>
       </div>
     </Tag>

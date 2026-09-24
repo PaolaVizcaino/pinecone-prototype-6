@@ -22,7 +22,7 @@ export default function QuestionPage({ params }) {
       <p className="crumbs"><Link href="/">Home</Link> / <Link href={`/situations/${sit.slug}`}>{sit.name}</Link></p>
       <div className="qhead">
         <h1>{q.title}</h1>
-        <p className="muted qhead__lead">{q.blurb}</p>
+        <p className="muted qhead__lead">{q.blurbLead && <b>{q.blurbLead} </b>}{q.blurb}</p>
       </div>
 
       {q.story && (
@@ -30,7 +30,6 @@ export default function QuestionPage({ params }) {
           <div className="story__who">
             <div className="story__avatar" aria-hidden="true">{q.story.who[0]}</div>
             <div>
-              <p className="eyebrow">Meet {q.story.who}</p>
               <h2>{q.story.who}</h2>
               <p className="muted">{q.story.role}</p>
             </div>
