@@ -51,7 +51,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 .r__amt input[readonly]{border-color:transparent;background:transparent;color:#4a4f55;padding-right:8px}
 .r__x{border:0;background:transparent;color:#9aa0a6;font-size:20px;line-height:1;cursor:pointer;width:30px;height:30px;border-radius:8px}
 .r__x:hover{background:var(--sunken);color:var(--ink)}
-.r__x[disabled]{visibility:hidden}
+.r__x[disabled]{display:none}
 .addrow{display:flex;gap:8px;padding:8px 10px 10px 16px;border-top:1px solid #eef1f3;align-items:center}
 .addrow input{font:inherit;font-size:14px;flex:1;min-width:0;border:1.5px dashed #c9cfd4;border-radius:8px;padding:6px 10px;background:#fff}
 .addrow button{font:inherit;font-size:14px;font-weight:700;border:0;background:var(--teal-soft);color:var(--teal-text);border-radius:8px;padding:7px 12px;cursor:pointer}
@@ -103,6 +103,8 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 footer{font-size:13px;color:var(--muted);margin-top:40px;padding-top:16px;border-top:1px solid var(--line)}
 @media (max-width:560px){.sum__in{grid-template-columns:1fr 1fr}.piegrid{grid-template-columns:1fr}.btns{grid-template-columns:1fr}.r{grid-template-columns:1fr auto auto}.r__name em{display:none}}
 body.grace .addrow{display:none}
+body.grace .r{grid-template-columns:1fr auto}body.grace .r__x{display:none}
+.r__amt.ro span{display:none}.r__amt.ro input{width:auto;min-width:0;text-align:right;padding-right:0}
 body.grace .r__amt input:not([readonly]){border:2px solid var(--teal);background:var(--teal-soft)}
 body.grace .r__amt input:not([readonly]):focus{background:#fff}
 .editkey{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);margin-top:-8px}.editkey i{font-style:normal;font-weight:700;font-size:13px;color:var(--ink);padding:3px 8px;border:2px solid var(--teal);background:var(--teal-soft);border-radius:6px;font-variant-numeric:tabular-nums}
@@ -198,7 +200,7 @@ function row(l){
   const tag=l.side==='out'?(l.fixed?' <em>fixed</em>':' <em class="var">variable</em>'):'';
   r.innerHTML='<span class="r__name">'+l.n+tag+'</span><span class="r__amt"><span>$</span><input type="text" inputmode="numeric" aria-label="'+l.n+' per month" placeholder="0"></span><button type="button" class="r__x" aria-label="Remove '+l.n+'"'+(l.custom?'':' disabled')+'>×</button>';
   const inp=r.querySelector('input');if(l.v)inp.value=l.v.toLocaleString('en-US');
-  if(GRACE&&l.lock){inp.readOnly=true;inp.tabIndex=-1}
+  if(GRACE&&l.lock){inp.readOnly=true;inp.tabIndex=-1;inp.value=fmt(l.v);inp.size=Math.max(4,inp.value.length);inp.parentElement.classList.add('ro')}
   inp.addEventListener('input',()=>{const n=parseInt(inp.value.replace(/[^0-9]/g,''),10)||0;inp.value=n?n.toLocaleString('en-US'):'';l.v=n;calc()});
   r.querySelector('.r__x').onclick=()=>{LINES.splice(LINES.indexOf(l),1);r.remove();calc()};
   return r;
