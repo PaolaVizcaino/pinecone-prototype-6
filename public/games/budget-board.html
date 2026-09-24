@@ -70,6 +70,7 @@ button:focus-visible,input:focus-visible{outline:3px solid #f4c542;outline-offse
 .cta.second{background:#fff;color:var(--navy);border:2px solid var(--line)}
 .link{font:inherit;font-size:15px;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:6px 0;align-self:flex-start}
 .nav{display:flex;flex-direction:column;gap:6px}
+.backlink{font:inherit;font-size:15px;font-weight:600;color:var(--teal-text);background:none;border:0;padding:0;cursor:pointer;align-self:flex-start;margin-bottom:-8px}.backlink:hover{text-decoration:underline}
 .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 /* picture */
@@ -148,6 +149,7 @@ body.grace .r__amt input:not([readonly]):focus{background:#fff}
 
 <!-- STEP 2: PICTURE -->
 <section class="step" id="s2" hidden>
+  <button type="button" class="backlink" id="back0">← Back to the budget</button>
   <h2 id="h2">Where your money goes</h2>
   <div class="stats" id="stats"></div>
   <div class="takeaway" id="takeaway"></div>
@@ -238,7 +240,7 @@ function calc(){
   $('#toPic').disabled=!(i>0&&o>0);
 }
 function show(id){['s1','s2'].forEach(s=>$('#'+s).hidden=s!==id);[...$('#prog').children].forEach((d,k)=>d.className=k<(id==='s1'?1:2)?'on':'');if(window.self===window.top)window.scrollTo(0,0);else parent.postMessage({pineconeScrollTop:true},'*')}
-$('#back1').onclick=()=>show('s1');
+$('#back1').onclick=()=>show('s1');$('#back0').onclick=()=>show('s1');
 // ---------- picture ----------
 const WARM=['#8c1515','#a1332a','#b34a2c','#c05f2a','#cc7530','#d48a3e','#dc9f52','#e3b46a','#e8c384','#ecd1a0'];
 $('#toPic').onclick=()=>{picture();show('s2')};
@@ -289,6 +291,7 @@ $('#dl').onclick=()=>{
 if(GRACE){
   $('#lead1').textContent='Grace\'s numbers are filled in. Her paycheck, planned savings and fixed costs are set. The variable lines are yours to change.';
   $('#h1').textContent='How do I start making a budget?';
+  $('#back0').textContent='← Back to Grace\'s budget';$('#back1').textContent='Adjust Grace\'s budget';
 
   $('#ask b').textContent='Before you help Grace, ask yourself';
   $('#ask ol').innerHTML='<li>What does Grace want her budget to help her with?</li><li>Which of her costs are fixed, and which are variable?</li><li>Which costs are essential, and which could be reduced?</li>';
