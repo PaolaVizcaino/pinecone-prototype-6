@@ -20,7 +20,7 @@ export default function HomeTop() {
         <div className="wrap hero">
           <p className="eyebrow">Free financial education from Stanford&apos;s Initiative for Financial Decision-Making</p>
           <h1 id="hero-title">We won&apos;t tell you what to do with your money. We&apos;ll help you figure it out.</h1>
-          <p className="lead">Type the question on your mind, or pick one below. Try it with your own numbers in about 5 minutes.</p>
+          <p className="lead">Type the question on your mind, or pick one below.</p>
           <form className="qbar" onSubmit={submit} role="search">
             <label className="sr-only" htmlFor="qbar-input">Type your money question</label>
             <svg className="qbar__ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>

@@ -178,7 +178,7 @@ const LINES=[
  {id:'pay',n:'Paycheck (after taxes)',side:'in',g:'',v:GRACE?4300:0,lock:1},
  {id:'side',n:'Side income, tips or gigs',side:'in',g:'',v:0,lock:1,hideG:1},
  {id:'ef',n:'Emergency fund',side:'save',g:'',v:0,lock:1,hideG:1},
- {id:'ret',n:GRACE?'Retirement (401k)':'Retirement (IRA)',side:'save',g:'',v:GRACE?300:0,lock:1},
+ {id:'ret',n:'Retirement (IRA)',side:'save',g:'',v:GRACE?300:0,lock:1},
  {id:'goal',n:'A goal (trip, car, home)',side:'save',g:'',v:0,lock:1,hideG:1},
  {id:'rent',n:'Rent or mortgage',side:'out',g:'Bills',fixed:1,v:GRACE?1500:0,lock:1},
  {id:'util',n:'Utilities',side:'out',g:'Bills',fixed:1,v:GRACE?250:0,lock:1},
@@ -251,7 +251,7 @@ function picture(){
   const t=$('#takeaway');
   if(left<0)t.innerHTML='<span class="eyebrow">What this means</span><p>'+(GRACE?'Grace\'s plan':'This plan')+' comes up <b>'+fmt(-left)+'</b> short each month'+(s?', after '+fmt(s)+' of planned savings':'')+'. Seeing it is the first step. The variable lines are where the room is.</p>';
   else if(keep===0)t.innerHTML='<span class="eyebrow">What this means</span><p>Every dollar that comes in goes out. Nothing is set aside yet.</p>';
-  else if(GRACE)t.innerHTML='<span class="eyebrow">What this means</span><p>After her fixed costs, her everyday costs and her 401(k), Grace has <b>'+fmt(left)+'</b> left over each month. That is the money that could start her emergency fund.</p>';
+  else if(GRACE)t.innerHTML='<span class="eyebrow">What this means</span><p>After her fixed costs, her everyday costs and her retirement saving, Grace has <b>'+fmt(left)+'</b> left over each month. That is the money that could start her emergency fund.</p>';
   else t.innerHTML='<span class="eyebrow">What this means</span><p>'+W+' keep'+(GRACE?'s':'')+' <b>'+fmt(keep)+'</b> a month, '+pct+'% of '+her+' take-home pay'+(s&&left>0?': '+fmt(s)+' of planned savings plus '+fmt(left)+' left over':s?', all of it planned savings':', what is left after spending')+'. Planned savings are the part '+who+' can count on, because they are decided before the spending happens.</p>';
   const GROUPS=[['Fixed costs',l=>l.fixed,'#8c1515'],['Variable costs',l=>!l.fixed,'#dc8831']];
   const slices=[];
@@ -274,7 +274,7 @@ function picture(){
   pie.querySelectorAll('path').forEach(p=>{p.addEventListener('mouseenter',()=>hi(p.dataset.k,true));p.addEventListener('mouseleave',()=>hi(0,false));p.onclick=()=>{const b=$('#legend').querySelector('.lg.grp[data-k="'+p.dataset.k+'"]');if(b&&b.getAttribute('aria-expanded')!=='true')b.click()}});
   const v=$('#verdict');
   if(GRACE){
-    if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start building an emergency fund?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after her bills, her everyday costs and her 401(k). If she moves it into a savings account every month, that is her emergency fund starting. In a year it would be about <b>'+fmt(left*12)+'</b>, so the next surprise does not have to go on her credit card.</p>'}
+    if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start building an emergency fund?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after her bills, her everyday costs and her retirement saving. If she moves it into a savings account every month, that is her emergency fund starting. In a year it would be about <b>'+fmt(left*12)+'</b>, so the next surprise does not have to go on her credit card.</p>'}
     else{v.className='verdict no';v.innerHTML='<h3>Here\'s Grace\'s budget. Can she start building an emergency fund?</h3><div class="big">Not yet</div><p>'+(left<0?'Money out is still '+fmt(-left)+' more than money in, so there is nothing to set aside. ':'Every dollar that comes in goes out. ')+'Go back to the variable lines and think about which costs are essential and which could be reduced. Even a small amount each month gets her started.</p>'}
   }
   else if(left>0){v.className='verdict';v.innerHTML='<h3>Here\'s your budget. Is there room to save more?</h3><div class="big">Yes: '+fmt(left)+' a month</div><p>That is what is left after your planned savings'+(s?' of '+fmt(s):'')+' and everything you spend. You could add it to your saving line, put it toward a goal, or keep it as breathing room. Which one is your call.</p>'}
@@ -295,7 +295,7 @@ if(GRACE){
 
   $('#ask b').textContent='Before you help Grace, ask yourself';
   $('#ask ol').innerHTML='<li>What does Grace want her budget to help her with?</li><li>Which of her costs are fixed, and which are variable?</li><li>Which costs are essential, and which could be reduced?</li>';
-  $('#tSave .tbl__head small').textContent='Her 401(k) contribution. It comes out before anything else.';
+  $('#tSave .tbl__head small').textContent='Her retirement saving. It comes out before anything else.';
 }
 build();
 })();
